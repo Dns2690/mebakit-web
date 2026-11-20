@@ -1,0 +1,22 @@
+---
+import c from '../data/contenido.json';
+import k from '../data/contacto.json';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const anio = new Date().getFullYear();
+---
+<footer class="pie">
+  <div class="wrap fila">
+    <p class="logo">MEBAKIT</p>
+    <p>Ingeniería Mecatrónica · Universidad Invenio · {k.ubicacion} · {anio}</p>
+    <p>{c.pie.aviso}</p>
+    <p><a class="enlace" href={`${base}privacidad/`}>{c.pie.privacidad}</a></p>
+  </div>
+</footer>
+
+<style>
+  .pie { background: var(--tinta); color: #B9BDC2; padding-block: var(--e-7) calc(var(--e-7) + 72px); font-size: var(--t-chico); }
+  .fila { display: flex; flex-wrap: wrap; gap: var(--e-3) var(--e-6); align-items: baseline; }
+  .logo { font: 800 1.125rem/1 var(--f-display); font-stretch: 125%; color: var(--papel); margin-right: auto; }
+  a { color: var(--papel); }
+  @media (min-width: 861px) { .pie { padding-bottom: var(--e-7); } }
+</style>

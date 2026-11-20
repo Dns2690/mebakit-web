@@ -1,0 +1,49 @@
+---
+import c from '../data/contenido.json';
+import k from '../data/contacto.json';
+import Imagen from './Imagen.astro';
+import Formulario from './Formulario.astro';
+const wa = k.whatsapp ? `https://wa.me/${k.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(k.mensajeWhatsapp)}` : null;
+const mail = k.correo ? `mailto:${k.correo}?subject=${encodeURIComponent('Demostración de MEBAKIT')}` : null;
+const docs = c.documentos.filter((d) => d.archivo);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<section id="contacto" class="cierre" aria-labelledby="h-cierre">
+  <div class="foto"><Imagen id={c.cierre.imagen} sizes="100vw" /></div>
+  <div class="wrap grid">
+    <div class="lado">
+      <h2 id="h-cierre">{c.cierre.marca}</h2>
+      <p class="gris">{c.cierre.texto}</p>
+      {(wa || mail) && (
+        <div class="canales">
+          {wa && <a class="boton secundario" href={wa} rel="noopener" target="_blank">{c.acciones.whatsapp}</a>}
+          {mail && <a class="boton secundario" href={mail}>{c.acciones.correo}</a>}
+        </div>
+      )}
+      <p class="gris chico">{k.tiempoRespuesta}.</p>
+      <p class="gris chico">{c.cierre.alianzas}</p>
+      {docs.length > 0 && (
+        <ul class="docs">
+          {docs.map((d) => <li><a class="enlace" href={`${base}${d.archivo!.replace(/^\//, '')}`}>{d.titulo}</a>{d.detalle && <span class="gris"> · {d.detalle}</span>}</li>)}
+        </ul>
+      )}
+    </div>
+    <div class="caja"><Formulario /></div>
+  </div>
+</section>
+
+<style>
+  .cierre { padding-bottom: var(--e-9); }
+  .foto :global(img) { width: 100%; max-height: 70svh; object-fit: cover; }
+  .grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--e-8); margin-top: calc(-1 * var(--e-9)); position: relative; }
+  .lado { display: grid; gap: var(--e-4); align-content: start; padding-top: calc(var(--e-9) + var(--e-6)); }
+  .canales { display: flex; flex-wrap: wrap; gap: var(--e-3); margin-top: var(--e-2); }
+  .chico { font-size: var(--t-chico); }
+  .docs { display: grid; gap: var(--e-2); margin-top: var(--e-3); }
+  .caja { background: var(--papel); padding: var(--e-6); border-radius: var(--radio); box-shadow: 0 12px 32px -12px rgba(21, 23, 26, 0.22); }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; margin-top: 0; gap: var(--e-6); }
+    .lado { padding-top: var(--e-7); }
+    .caja { padding: 0; box-shadow: none; }
+  }
+</style>

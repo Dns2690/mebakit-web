@@ -1,0 +1,43 @@
+---
+import c from '../data/contenido.json';
+import Imagen from './Imagen.astro';
+const e = c.especificaciones;
+const bloques = e.bloques.map((b) => ({ ...b, filas: b.filas.filter(([, v]) => v !== null) }));
+---
+<section id="especificaciones" class="seccion oscura" aria-labelledby="h-specs">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2 id="h-specs">{e.h2}</h2>
+      <p>{e.nota}</p>
+    </div>
+    <div class="bloques">
+      {bloques.map((b) => (
+        <article class="bloque">
+          {b.cad ? <div class="cad"><Imagen id={b.cad} sizes="128px" /></div> : <div class="cad-hueco" aria-hidden="true" />}
+          <div>
+            <h3>{b.modulo}</h3>
+            <dl>
+              {b.filas.map(([k, v]) => (<div class="fila"><dt>{k}</dt><dd class="datos">{v}</dd></div>))}
+            </dl>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .bloques { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e-7) var(--e-8); }
+  .bloque { display: grid; grid-template-columns: 112px 1fr; gap: var(--e-5); align-items: start; }
+  .cad { width: 112px; aspect-ratio: 1; border: 1px solid rgba(236, 235, 238, 0.14); border-radius: var(--radio); overflow: hidden; }
+  .cad-hueco { width: 112px; }
+  h3 { margin-bottom: var(--e-3); }
+  .fila { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--e-4); padding: var(--e-3) 0; border-top: 1px solid rgba(236, 235, 238, 0.16); font-size: 0.95rem; }
+  dt { color: #B9BDC2; }
+  dd { margin: 0; font-size: 0.9rem; }
+  @media (max-width: 900px) { .bloques { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .bloque { grid-template-columns: 1fr; }
+    .fila { grid-template-columns: 1fr; gap: var(--e-1); }
+  }
+</style>

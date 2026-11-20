@@ -1,0 +1,35 @@
+---
+import c from '../data/contenido.json';
+const u = c.uso;
+// Iconos de línea propios, un trazo de 1,5 px.
+const iconos = [
+  '<rect x="6" y="16" width="36" height="24" rx="2"/><path d="M6 13h36v3H6z"/><path d="M18 13v-4h4v4M26 13v-4h4v4"/>',
+  '<rect x="6" y="22" width="36" height="18" rx="2"/><path d="M18 22v18M30 22v18"/><path d="M8 14l30-6 2 4-30 6z"/>',
+  '<rect x="6" y="10" width="36" height="28" rx="2"/><circle cx="17" cy="26" r="4"/><circle cx="31" cy="26" r="4"/><path d="M17 30v12M31 30c0 6 4 8 8 12"/>',
+  '<rect x="6" y="18" width="36" height="22" rx="2"/><path d="M18 18v22M30 18v22"/><path d="M10 30c2-6 6-6 6 0s-4 6-4 0M34 26h4"/>',
+];
+---
+<section id="uso" class="seccion" aria-labelledby="h-uso">
+  <div class="wrap">
+    <div class="cabeza"><h2 id="h-uso">{u.h2}</h2></div>
+    <ol class="pasos">
+      {u.pasos.map((p, i) => (
+        <li>
+          <div class="cabeza-paso"><svg class="icono" viewBox="0 0 48 48" aria-hidden="true" set:html={iconos[i]} /><span class="datos n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span></div>
+          <h3>{p.titulo}</h3>
+          <p class="gris">{p.texto}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pasos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e-5); counter-reset: paso; }
+  .pasos li { display: grid; gap: var(--e-3); align-content: start; padding-top: var(--e-4); border-top: 2px solid var(--tinta); }
+  .cabeza-paso { display: flex; justify-content: space-between; align-items: flex-start; }
+  .icono { width: 48px; height: 48px; fill: none; stroke: var(--tinta); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+  .n { color: var(--azul); font-size: 0.95rem; }
+  @media (max-width: 860px) { .pasos { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--e-7); } }
+  @media (max-width: 480px) { .pasos { grid-template-columns: 1fr; row-gap: var(--e-6); } }
+</style>

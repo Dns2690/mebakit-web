@@ -1,0 +1,36 @@
+---
+import c from '../data/contenido.json';
+import Imagen from './Imagen.astro';
+---
+<section id="inicio" class="hero" aria-labelledby="h1">
+  <div class="wrap hero-grid">
+    <div class="texto" data-enter>
+      <h1 id="h1">{c.hero.h1}</h1>
+      <p class="sub">{c.hero.sub}</p>
+      <div class="acciones">
+        <a class="boton" href="#contacto">{c.acciones.principal}</a>
+        <a class="boton secundario" href="#especificaciones">{c.acciones.especificaciones}</a>
+      </div>
+    </div>
+    <div class="foto fundida" data-enter>
+      <Imagen id={c.hero.imagen} prioridad sizes="(min-width: 1000px) 60vw, 100vw" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { min-height: calc(100svh - var(--alto-nav)); display: flex; align-items: center; padding-block: var(--e-7); overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--e-6); align-items: center; }
+  .texto { display: grid; gap: var(--e-5); }
+  .sub { font-size: clamp(1.0625rem, 0.4vw + 1rem, 1.25rem); color: var(--gris-texto); max-width: 34ch; }
+  .acciones { display: flex; flex-wrap: wrap; gap: var(--e-3); margin-top: var(--e-2); }
+  .foto { margin-right: calc(-1 * var(--margen)); }
+  .foto :global(img) { width: 100%; }
+  @media (max-width: 999px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .foto { margin-inline: calc(-1 * var(--margen)); }
+  }
+  @media (max-width: 560px) {
+    .acciones .boton { width: 100%; }
+  }
+</style>

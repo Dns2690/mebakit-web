@@ -1,0 +1,40 @@
+:root {
+  /* Color */
+  --papel: #ECEBEE;        /* gris laboratorio: el mismo fondo de las fotos */
+  --papel-claro: #F6F6F8;  /* campos de formulario */
+  --superficie: #E2E1E5;   /* bloques sin foto */
+  --tinta: #15171A;        /* texto, sección oscura */
+  --azul: #1F4FBF;         /* acción, enlace, foco (6,3:1 sobre papel) */
+  --azul-hondo: #193F99;   /* hover del botón */
+  --azul-claro: #7FA2FF;   /* solo sobre --tinta (7,3:1) */
+  --gris-texto: #5F6469;   /* secundario (5,3:1) */
+  --gris-linea: #8A8F94;   /* solo líneas */
+  --linea-suave: rgba(21, 23, 26, 0.12);
+  --rojo: #D2261C;         /* polo +, estado activo; máx. 5 % */
+  --amarillo: #E8B517;     /* aviso de alta corriente, solo sobre --tinta */
+
+  /* Tipografía */
+  --f-display: "Archivo Variable", "Archivo", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", system-ui, sans-serif;
+  --f-datos: "IBM Plex Mono", ui-monospace, monospace;
+  --t-h1: clamp(2.375rem, 3.4vw + 1rem, 4.5rem);
+  --t-h2: clamp(1.75rem, 2.5vw + 1rem, 3rem);
+  --t-h3: 1.25rem;
+  --t-texto: clamp(1rem, 0.25vw + 0.95rem, 1.125rem);
+  --t-chico: 0.875rem;
+  --interlineado: 1.55;
+  --medida: 68ch;
+
+  /* Espacio y forma */
+  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px;
+  --e-6: 32px; --e-7: 48px; --e-8: 64px; --e-9: 96px; --e-10: 128px;
+  --ancho-max: 1200px;
+  --margen: clamp(20px, 5vw, 120px);
+  --radio: 4px;
+  --alto-nav: 64px;
+
+  /* Movimiento */
+  --dur-rapida: 150ms;
+  --dur: 250ms;
+  --curva: cubic-bezier(0.16, 1, 0.3, 1);   /* salida exponencial */
+}

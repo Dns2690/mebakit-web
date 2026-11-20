@@ -1,0 +1,53 @@
+---
+import c from '../data/contenido.json';
+const anclas = ['modulos', 'especificaciones', 'proceso', 'equipo'];
+---
+<header class="nav">
+  <div class="wrap nav-fila">
+    <a class="logo" href="#inicio" aria-label="MEBAKIT, inicio">MEBAKIT</a>
+    <nav aria-label="Principal">
+      <ul class="enlaces">
+        {c.nav.map((t, i) => <li><a class="enlace" href={`#${anclas[i]}`}>{t}</a></li>)}
+      </ul>
+    </nav>
+    <a class="boton accion" href="#contacto">{c.acciones.principal}</a>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu-movil">Menú</button>
+  </div>
+  <div id="menu-movil" class="menu-movil" hidden>
+    <ul>
+      {c.nav.map((t, i) => <li><a href={`#${anclas[i]}`}>{t}</a></li>)}
+      <li><a class="boton" href="#contacto">{c.acciones.principal}</a></li>
+    </ul>
+  </div>
+</header>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--papel) 94%, transparent); border-bottom: 1px solid var(--linea-suave); }
+  .nav-fila { display: flex; align-items: center; gap: var(--e-6); height: var(--alto-nav); }
+  .logo { font: 800 1.25rem/1 var(--f-display); font-stretch: 125%; letter-spacing: -0.02em; color: var(--tinta); text-decoration: none; margin-right: auto; padding-block: 12px; }
+  .enlaces { display: flex; gap: var(--e-5); font-size: 0.95rem; }
+  .enlaces a { padding-block: var(--e-2); }
+  .accion { min-height: 44px; padding-inline: var(--e-4); font-size: 0.95rem; }
+  .menu-boton { display: none; min-height: 44px; padding: 0 var(--e-4); font: 600 1rem var(--f-texto); background: none; border: 1px solid var(--tinta); border-radius: var(--radio); color: var(--tinta); cursor: pointer; }
+  .menu-movil { position: fixed; inset: var(--alto-nav) 0 0 0; background: var(--papel); padding: var(--e-7) var(--margen); }
+  .menu-movil ul { display: grid; gap: var(--e-5); }
+  .menu-movil a:not(.boton) { font: 800 2rem/1.1 var(--f-display); font-stretch: 125%; color: var(--tinta); text-decoration: none; }
+  .menu-movil .boton { width: 100%; }
+  @media (max-width: 860px) {
+    nav, .accion { display: none; }
+    .menu-boton { display: inline-flex; align-items: center; }
+  }
+</style>
+
+<script>
+  const boton = document.querySelector<HTMLButtonElement>('.menu-boton')!;
+  const menu = document.getElementById('menu-movil')!;
+  const cerrar = () => { boton.setAttribute('aria-expanded', 'false'); boton.textContent = 'Menú'; menu.hidden = true; };
+  boton.addEventListener('click', () => {
+    const abierto = boton.getAttribute('aria-expanded') === 'true';
+    if (abierto) return cerrar();
+    boton.setAttribute('aria-expanded', 'true'); boton.textContent = 'Cerrar'; menu.hidden = false;
+  });
+  menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', cerrar));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { cerrar(); boton.focus(); } });
+</script>

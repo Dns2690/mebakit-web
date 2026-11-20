@@ -1,0 +1,25 @@
+---
+import { imagenes } from '../data/imagenes.js';
+interface Props { id: string; sizes?: string; prioridad?: boolean; class?: string }
+const { id, sizes = '100vw', prioridad = false, class: clase } = Astro.props;
+const img = imagenes[id];
+if (!img) throw new Error(`Imagen desconocida: ${id}`);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const ruta = (w: number, ext: string) => `${base}img/${img.carpeta}/${id}-${w}.${ext}`;
+const srcset = (ext: string) => img.anchos.map((w: number) => `${ruta(w, ext)} ${w}w`).join(', ');
+const mayor = img.anchos[img.anchos.length - 1];
+---
+<picture class={clase}>
+  <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+  <img
+    src={ruta(mayor, 'webp')}
+    srcset={srcset('webp')}
+    sizes={sizes}
+    width={img.ancho}
+    height={img.alto}
+    alt={img.alt}
+    loading={prioridad ? 'eager' : 'lazy'}
+    fetchpriority={prioridad ? 'high' : 'auto'}
+    decoding="async"
+  />
+</picture>

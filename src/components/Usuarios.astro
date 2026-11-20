@@ -1,0 +1,20 @@
+---
+import c from '../data/contenido.json';
+const u = c.usuarios;
+---
+<section id="usuarios" class="seccion" aria-labelledby="h-usuarios">
+  <div class="wrap grid">
+    <div class="cabeza"><h2 id="h-usuarios">{u.h2}</h2></div>
+    <ul class="filas">
+      {u.filas.map((f) => (<li><h3>{f.perfil}</h3><p class="gris">{f.texto}</p></li>))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; }
+  .filas li { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--e-5); padding: var(--e-5) 0; border-top: 1px solid var(--linea-suave); }
+  .filas li:last-child { border-bottom: 1px solid var(--linea-suave); }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .filas li { grid-template-columns: 1fr; gap: var(--e-2); } }
+</style>

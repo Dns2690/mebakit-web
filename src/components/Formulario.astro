@@ -1,0 +1,182 @@
+---
+import c from '../data/contenido.json';
+import k from '../data/contacto.json';
+const f = c.formulario;
+const endpoint = k.formularioEndpoint;           // "netlify", una URL (p. ej. Web3Forms) o vacío
+const clave = (k as any).formularioClave || '';  // access_key de Web3Forms, si se usa
+const vistaPrevia = !endpoint;                    // sin destino: se muestra, pero no envía
+const esNetlify = endpoint === 'netlify';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<form
+  class="form"
+  name="demostracion"
+  method="POST"
+  action={esNetlify ? `${base}gracias/` : undefined}
+  novalidate
+  data-endpoint={endpoint}
+  data-vista-previa={vistaPrevia ? 'true' : undefined}
+  data-netlify={esNetlify ? 'true' : undefined}
+  data-netlify-recaptcha={esNetlify ? 'true' : undefined}
+  netlify-honeypot={esNetlify ? 'empresa' : undefined}
+>
+  {vistaPrevia && <p class="aviso-previa" role="note">Vista previa: este formulario todavía no envía solicitudes.</p>}
+  <input type="hidden" name="form-name" value="demostracion" />
+  {clave && <input type="hidden" name="access_key" value={clave} />}
+  <p class="trampa" aria-hidden="true"><label>Empresa <input name="empresa" tabindex="-1" autocomplete="off" /></label></p>
+
+  <div class="resumen" role="alert" tabindex="-1" hidden>
+    <p><strong>{f.errores.resumen}</strong></p>
+    <ul></ul>
+  </div>
+
+  <div class="campo">
+    <label for="f-nombre">{f.campos.nombre}</label>
+    <input id="f-nombre" name="nombre" autocomplete="name" maxlength="80" required data-error={f.errores.nombre} />
+    <p class="error" id="e-nombre" hidden></p>
+  </div>
+  <div class="campo">
+    <label for="f-correo">{f.campos.correo}</label>
+    <input id="f-correo" name="correo" type="email" inputmode="email" autocomplete="email" maxlength="120" required data-error={f.errores.correo} />
+    <p class="error" id="e-correo" hidden></p>
+  </div>
+  <div class="campo">
+    <label for="f-perfil">{f.campos.perfil.etiqueta}</label>
+    <select id="f-perfil" name="perfil" required data-error={f.errores.perfil}>
+      <option value="">Elige una opción</option>
+      {f.campos.perfil.opciones.map((o) => <option>{o}</option>)}
+    </select>
+    <p class="error" id="e-perfil" hidden></p>
+  </div>
+  <div class="campo">
+    <label for="f-interes">{f.campos.interes.etiqueta}</label>
+    <select id="f-interes" name="interes" required data-error={f.errores.interes}>
+      <option value="">Elige una opción</option>
+      {f.campos.interes.opciones.map((o) => <option>{o}</option>)}
+    </select>
+    <p class="error" id="e-interes" hidden></p>
+  </div>
+  <fieldset class="campo">
+    <legend>{f.campos.equipos.etiqueta}</legend>
+    <div class="opciones">
+      {f.campos.equipos.opciones.map((o, i) => (
+        <label class="opcion"><input type="radio" name="equipos" value={o} /> {o}</label>
+      ))}
+    </div>
+  </fieldset>
+  <div class="campo">
+    <label for="f-mensaje">{f.campos.mensaje}</label>
+    <textarea id="f-mensaje" name="mensaje" rows="3" maxlength="2000"></textarea>
+  </div>
+  <div class="campo">
+    <label class="check"><input id="f-consentimiento" type="checkbox" name="consentimiento" value="sí" required data-error={f.errores.consentimiento} /> {f.campos.consentimiento}</label>
+    <p class="error" id="e-consentimiento" hidden></p>
+  </div>
+
+  {esNetlify && (
+    <div class="campo captcha">
+      <div data-netlify-recaptcha="true"></div>
+      <p class="error" id="e-captcha" hidden></p>
+    </div>
+  )}
+
+  <button class="boton enviar" type="submit" data-texto={c.acciones.principal} data-enviando={f.enviando}>{c.acciones.principal}</button>
+  <p class="estado" role="status" aria-live="polite"></p>
+</form>
+
+<script is:inline define:vars={{ exito: f.exito, errorEnvio: f.errores.envio, errorCaptcha: f.errores.captcha, tiempo: k.tiempoRespuesta }}>
+  const form = document.querySelector('form.form');
+  if (form) {
+    const resumen = form.querySelector('.resumen');
+    const estado = form.querySelector('.estado');
+    const boton = form.querySelector('.enviar');
+    const campos = [...form.querySelectorAll('[required]')];
+
+    const validar = (el) => {
+      const err = form.querySelector('#e-' + el.name);
+      const v = (el.value || '').trim();
+      const ok = el.type === 'checkbox' ? el.checked
+        : el.type === 'email' ? /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) && el.checkValidity()
+        : el.checkValidity() && v !== '';
+      el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (err) {
+        err.hidden = ok; err.textContent = ok ? '' : el.dataset.error;
+        if (!ok) el.setAttribute('aria-describedby', err.id); else el.removeAttribute('aria-describedby');
+      }
+      return ok;
+    };
+    campos.forEach((el) => el.addEventListener('blur', () => { if (el.value || el.type === 'checkbox') validar(el); }));
+    campos.forEach((el) => el.addEventListener('change', () => { if (el.getAttribute('aria-invalid') === 'true') validar(el); }));
+
+    // "Unirme al piloto" preselecciona el interés.
+    document.querySelectorAll('[data-interes]').forEach((a) => a.addEventListener('click', () => {
+      const sel = form.querySelector('#f-interes'); sel.value = a.dataset.interes;
+    }));
+
+    form.addEventListener('submit', async (ev) => {
+      estado.textContent = '';
+      const malos = campos.filter((el) => !validar(el));
+      const lista = resumen.querySelector('ul');
+      lista.innerHTML = '';
+      const captchaCampo = form.querySelector('[name="g-recaptcha-response"]');
+      const errCaptcha = form.querySelector('#e-captcha');
+      const sinCaptcha = captchaCampo && !captchaCampo.value;
+      if (errCaptcha) { errCaptcha.hidden = !sinCaptcha; errCaptcha.textContent = sinCaptcha ? errorCaptcha : ''; }
+      if (malos.length || sinCaptcha) {
+        ev.preventDefault();
+        malos.forEach((el) => {
+          const li = document.createElement('li'); const a = document.createElement('a');
+          a.href = '#' + el.id; a.textContent = el.dataset.error; li.append(a); lista.append(li);
+        });
+        if (sinCaptcha) { const li = document.createElement('li'); li.textContent = errorCaptcha; lista.append(li); }
+        resumen.hidden = false; resumen.focus();
+        return;
+      }
+      resumen.hidden = true;
+      if (form.dataset.vistaPrevia) { ev.preventDefault(); estado.textContent = 'Vista previa: la solicitud no se envió.'; return; }
+      boton.disabled = true; boton.textContent = boton.dataset.enviando;
+      // Netlify: envío nativo (el captcha se valida en el servidor y redirige a /gracias/).
+      if (form.dataset.endpoint === 'netlify') return;
+      ev.preventDefault();
+      try {
+        const res = await fetch(form.dataset.endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        estado.textContent = exito.replace('{tiempoRespuesta}', tiempo.replace(/\.$/, ''));
+      } catch (e) {
+        estado.textContent = errorEnvio;
+      } finally {
+        boton.disabled = false; boton.textContent = boton.dataset.texto;
+      }
+    });
+    // Si el navegador vuelve atrás desde /gracias/, el botón no queda bloqueado.
+    window.addEventListener('pageshow', () => { boton.disabled = false; boton.textContent = boton.dataset.texto; });
+  }
+</script>
+
+<style>
+  .form { display: grid; gap: var(--e-5); }
+  .aviso-previa { font-size: var(--t-chico); padding: var(--e-3) var(--e-4); border: 1px dashed var(--gris-linea); border-radius: var(--radio); color: var(--gris-texto); }
+  .campo { display: grid; gap: var(--e-2); border: 0; padding: 0; margin: 0; }
+  label, legend { font-size: var(--t-chico); font-weight: 600; padding: 0; }
+  input:not([type="radio"]):not([type="checkbox"]), select, textarea {
+    width: 100%; min-height: 48px; padding: var(--e-3) var(--e-4);
+    font: 400 16px/1.4 var(--f-texto); color: var(--tinta);
+    background: var(--papel-claro); border: 1px solid var(--gris-linea); border-radius: var(--radio);
+  }
+  input:hover, select:hover, textarea:hover { border-color: var(--tinta); }
+  [aria-invalid="true"] { border-color: var(--rojo) !important; }
+  .error { color: #B3241B; font-size: var(--t-chico); }
+  .opciones { display: flex; flex-wrap: wrap; gap: var(--e-2); margin-top: var(--e-2); }
+  .opcion { display: inline-flex; align-items: center; gap: var(--e-2); min-height: 44px; padding: 0 var(--e-4); border: 1px solid var(--gris-linea); border-radius: var(--radio); font-weight: 400; cursor: pointer; }
+  .opcion:has(input:checked) { border-color: var(--azul); color: var(--azul); }
+  .check { display: flex; gap: var(--e-3); align-items: flex-start; font-weight: 400; font-size: 0.95rem; }
+  .check input, .opcion input { accent-color: var(--azul); width: 18px; height: 18px; margin-top: 2px; }
+  .resumen { padding: var(--e-4); border: 2px solid var(--rojo); border-radius: var(--radio); display: grid; gap: var(--e-2); }
+  .resumen[hidden] { display: none; }
+  .resumen ul { list-style: disc; padding-left: var(--e-5); }
+  .trampa { position: absolute; left: -9999px; }
+  .enviar { justify-self: start; }
+  .estado { font-weight: 600; }
+  @media (max-width: 560px) { .enviar { width: 100%; } }
+</style>

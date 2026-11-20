@@ -1,0 +1,56 @@
+---
+import c from '../data/contenido.json';
+import Imagen from './Imagen.astro';
+const p = c.proceso;
+const s = p.simulacion;
+---
+<section id="proceso" class="seccion" aria-labelledby="h-proceso">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2 id="h-proceso">{p.h2}</h2>
+      <p>{p.intro}</p>
+    </div>
+    <ol class="linea">
+      {p.pasos.map((paso, i) => (
+        <li>
+          <div class={`visual ${paso.imagen?.startsWith('cad') ? 'cad' : ''}`}>
+            {paso.imagen && <Imagen id={paso.imagen} sizes="(min-width: 1000px) 220px, 45vw" />}
+          </div>
+          <h3>{paso.titulo}</h3>
+          <p class="gris">{paso.texto}</p>
+        </li>
+      ))}
+    </ol>
+    <div class="sim">
+      <h3>{s.titulo}</h3>
+      <table>
+        <thead><tr>{s.columnas.map((col) => <th scope="col">{col}</th>)}</tr></thead>
+        <tbody>{s.filas.map(([a, b, d]) => (<tr><th scope="row">{a}</th><td class="datos">{b}</td><td class="datos">{d}</td></tr>))}</tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .linea { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--e-5); }
+  .linea li { display: grid; gap: var(--e-3); align-content: start; }
+  .visual { aspect-ratio: 4 / 3; border-radius: var(--radio); overflow: hidden; background: var(--superficie); display: grid; place-items: center; }
+  .visual.cad { background: var(--tinta); }
+  .visual :global(picture), .visual :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .visual.cad :global(img) { object-fit: contain; padding: var(--e-2); }
+  .sim { max-width: 720px; display: grid; gap: var(--e-4); }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: var(--e-3) var(--e-4) var(--e-3) 0; border-bottom: 1px solid var(--linea-suave); font-size: 0.95rem; }
+  thead th { font-weight: 600; border-bottom: 2px solid var(--tinta); }
+  tbody th { font-weight: 400; }
+  @media (max-width: 1000px) { .linea { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: var(--e-7); } }
+  .linea li { min-width: 0; }
+  .linea h3 { overflow-wrap: anywhere; hyphens: auto; }
+  @media (max-width: 560px) {
+    .linea { grid-template-columns: 1fr; row-gap: var(--e-5); }
+    .linea li { grid-template-columns: 132px minmax(0, 1fr); grid-template-rows: auto 1fr; column-gap: var(--e-4); row-gap: var(--e-1); align-items: start; }
+    .linea .visual { grid-row: 1 / span 2; }
+    .linea h3 { font-size: 1.125rem; }
+    .linea p { font-size: 0.95rem; }
+  }
+</style>

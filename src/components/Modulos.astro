@@ -1,0 +1,69 @@
+---
+import c from '../data/contenido.json';
+import Imagen from './Imagen.astro';
+const m = c.modulos;
+// Posición de cada punto sobre la foto "mebakit-abierto" (% del ancho/alto).
+const puntos: Record<string, [number, number]> = {
+  fuente: [38, 26], probador: [51, 24], soldadora: [64, 22],
+};
+---
+<section id="modulos" class="seccion" aria-labelledby="h-modulos">
+  <div class="wrap">
+    <div class="cabeza">
+      <h2 id="h-modulos">{m.h2}</h2>
+      <p>{m.intro}</p>
+    </div>
+    <div class="cuerpo">
+      <div class="foto fundida">
+        <Imagen id={m.imagen} sizes="(min-width: 1000px) 62vw, 100vw" />
+        {m.items.map((it, i) => (
+          <button type="button" class="punto" data-modulo={it.id} style={`left:${puntos[it.id][0]}%;top:${puntos[it.id][1]}%`} aria-label={`Resaltar ${it.titulo}`}>{i + 1}</button>
+        ))}
+      </div>
+      <ol class="lista">
+        {m.items.map((it, i) => (
+          <li data-modulo={it.id} tabindex="-1">
+            <span class="num datos" aria-hidden="true">{i + 1}</span>
+            <div><h3>{it.titulo}</h3><p class="gris">{it.texto}</p></div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cuerpo { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--e-7); align-items: center; }
+  .foto { position: relative; }
+  .punto {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--papel);
+    background: var(--tinta); color: var(--papel); font: 500 0.9rem/1 var(--f-datos); cursor: pointer;
+    transition: background var(--dur-rapida) var(--curva), transform var(--dur-rapida) var(--curva);
+  }
+  .punto:hover, .punto.activo { background: #B3241B; }
+  .punto::after { content: ''; position: absolute; inset: -6px; }
+  .lista { display: grid; }
+  .lista li { display: grid; grid-template-columns: 36px 1fr; gap: var(--e-4); padding: var(--e-4) 0; border-top: 1px solid var(--linea-suave); transition: background var(--dur) var(--curva); }
+  .lista li:last-child { border-bottom: 1px solid var(--linea-suave); }
+  .lista h3 { margin-bottom: var(--e-1); }
+  .num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--tinta); color: var(--papel); font-size: 0.85rem; }
+  .lista li.activo .num { background: #B3241B; }
+  .lista li:focus { outline: none; }
+  @media (max-width: 999px) {
+    .cuerpo { grid-template-columns: 1fr; }
+    .foto { margin-inline: calc(-1 * var(--margen)); }
+  }
+</style>
+
+<script>
+  const seccion = document.getElementById('modulos')!;
+  const activar = (id: string) => {
+    seccion.querySelectorAll('[data-modulo]').forEach((el) => el.classList.toggle('activo', el.getAttribute('data-modulo') === id));
+  };
+  seccion.querySelectorAll<HTMLButtonElement>('.punto').forEach((b) => b.addEventListener('click', () => {
+    const id = b.dataset.modulo!; activar(id);
+    seccion.querySelector<HTMLElement>(`.lista [data-modulo="${id}"]`)?.focus({ preventScroll: true });
+  }));
+  seccion.querySelectorAll<HTMLElement>('.lista li').forEach((li) => li.addEventListener('mouseenter', () => activar(li.dataset.modulo!)));
+</script>

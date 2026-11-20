@@ -1,0 +1,399 @@
+{
+  "meta": {
+    "titulo": "MEBAKIT — Estación portátil para trabajos electrónicos",
+    "descripcion": "Fuente regulable hasta 20 V, probador de LED y soldadora por puntos en una caja modular impresa en 3D, diseñada en Universidad Invenio."
+  },
+  "acciones": {
+    "principal": "Solicitar demostración",
+    "especificaciones": "Ver especificaciones",
+    "piloto": "Unirme al piloto",
+    "whatsapp": "Escribir por WhatsApp",
+    "correo": "Enviar un correo",
+    "ficha": "Descargar ficha técnica"
+  },
+  "nav": [
+    "Módulos",
+    "Especificaciones",
+    "Cómo se hizo",
+    "Equipo"
+  ],
+  "hero": {
+    "h1": "Estación portátil para reparar electrónica",
+    "sub": "Fuente regulable hasta 20 V, probador de LED y soldadora por puntos en una caja modular impresa en 3D, para estudiantes y técnicos que trabajan fuera del taller.",
+    "imagen": "mebakit-cerrado"
+  },
+  "problema": {
+    "h2": "Equipos sueltos antes de reparar",
+    "intro": "Revisar un circuito fuera del laboratorio empieza por cargar, ubicar y conectar cada instrumento por separado.",
+    "puntos": [
+      "Fuente, soldador, probador y multímetro viajan en bolsas distintas.",
+      "Cada equipo pide su enchufe, sus cables y su espacio en la mesa.",
+      "Con todo disperso, cuesta relacionar lo que mides con lo que falla."
+    ],
+    "imagen": null,
+    "diagrama": {
+      "antes": "Hoy: cuatro equipos y sus cables",
+      "despues": "MEBAKIT: una sola caja",
+      "etiquetas": [
+        "Fuente",
+        "Probador",
+        "Soldadora"
+      ]
+    }
+  },
+  "modulos": {
+    "h2": "Tres módulos en una caja",
+    "intro": "Cada módulo trabaja por separado en su propio compartimento, así la etapa de potencia queda aislada de la de medición.",
+    "imagen": "mebakit-abierto",
+    "items": [
+      {
+        "id": "fuente",
+        "titulo": "Fuente regulable",
+        "texto": "Alimenta el circuito bajo prueba con tensión ajustable hasta 20 V y 1,5 A."
+      },
+      {
+        "id": "probador",
+        "titulo": "Probador de LED",
+        "texto": "Verifica polaridad y funcionamiento con corriente limitada, sin quemar el diodo."
+      },
+      {
+        "id": "soldadora",
+        "titulo": "Soldadora por puntos",
+        "texto": "Une terminales delgados, como las conexiones de una batería, con pulsos de alta corriente."
+      }
+    ]
+  },
+  "uso": {
+    "h2": "Del traslado a la mesa en cuatro pasos",
+    "pasos": [
+      {
+        "titulo": "Transportar",
+        "texto": "Llevas una sola caja, con la tapa puesta."
+      },
+      {
+        "titulo": "Seleccionar",
+        "texto": "Quitas la tapa y eliges el módulo que necesitas."
+      },
+      {
+        "titulo": "Utilizar",
+        "texto": "Conectas en los bornes del frente y trabajas."
+      },
+      {
+        "titulo": "Cerrar",
+        "texto": "Desconectas, pones la tapa y te la llevas."
+      }
+    ]
+  },
+  "especificaciones": {
+    "h2": "Especificaciones técnicas",
+    "nota": "Valores de diseño y de simulación en Proteus. La medición en banco del prototipo está en curso.",
+    "bloques": [
+      {
+        "modulo": "Fuente regulable",
+        "cad": "cad-modulo-fuente",
+        "filas": [
+          [
+            "Tensión de salida",
+            "1,25–20 V DC"
+          ],
+          [
+            "Corriente máxima",
+            "1,5 A"
+          ],
+          [
+            "Rizado en salida",
+            "≤ 50 mVpp (12,5 mVpp simulado a 1 A)"
+          ],
+          [
+            "Regulador",
+            "LM317T, con protección térmica y por sobrecorriente"
+          ]
+        ]
+      },
+      {
+        "modulo": "Probador de LED",
+        "cad": "cad-modulo-probador-led",
+        "filas": [
+          [
+            "Protección",
+            "Corriente limitada por resistencia en serie"
+          ],
+          [
+            "Salidas",
+            null
+          ]
+        ]
+      },
+      {
+        "modulo": "Soldadora por puntos",
+        "cad": "cad-modulo-soldadora",
+        "filas": [
+          [
+            "Principio",
+            "Soldadura por resistencia (efecto Joule)"
+          ],
+          [
+            "Transformador",
+            "Secundario de 3 vueltas de cobre grueso"
+          ],
+          [
+            "Ventilación",
+            "Rejilla trasera y cinco ranuras laterales"
+          ]
+        ]
+      },
+      {
+        "modulo": "Equipo completo",
+        "cad": "cad-ensamble",
+        "filas": [
+          [
+            "Alimentación",
+            "120 VAC, 60 Hz, cable de 1,5 m"
+          ],
+          [
+            "Estructura",
+            "Tres módulos impresos en 3D con encastres y tapa en dos partes"
+          ],
+          [
+            "Dimensiones",
+            null
+          ],
+          [
+            "Peso",
+            null
+          ]
+        ]
+      }
+    ]
+  },
+  "comparativa": {
+    "h2": "MEBAKIT frente a equipos separados",
+    "columnas": [
+      "Equipos separados",
+      "Banco fijo",
+      "MEBAKIT"
+    ],
+    "filas": [
+      [
+        "Se traslada en una sola pieza",
+        "No",
+        "No",
+        "Sí"
+      ],
+      [
+        "Listo sin montar el puesto",
+        "No",
+        "Sí",
+        "Sí"
+      ],
+      [
+        "Cada herramienta en su propio módulo",
+        "No",
+        "En parte",
+        "Sí"
+      ],
+      [
+        "Sirve fuera del taller",
+        "Sí",
+        "No",
+        "Sí"
+      ]
+    ]
+  },
+  "usuarios": {
+    "h2": "Para estudiantes, técnicos y talleres",
+    "filas": [
+      {
+        "perfil": "Estudiantes de ingeniería",
+        "texto": "Llevan un solo equipo a prácticas y laboratorios."
+      },
+      {
+        "perfil": "Técnicos independientes",
+        "texto": "Atienden reparaciones a domicilio sin cargar varios equipos."
+      },
+      {
+        "perfil": "Talleres pequeños",
+        "texto": "Suman un puesto de trabajo móvil sin ocupar otra mesa."
+      },
+      {
+        "perfil": "Laboratorios educativos",
+        "texto": "Usan un equipo didáctico que muestra la integración de sistemas."
+      }
+    ],
+    "imagen": null
+  },
+  "proceso": {
+    "h2": "Diseñado en CAD, impreso en 3D",
+    "intro": "La carcasa se modeló en Autodesk Inventor como 12 piezas que encajan entre sí y se imprimió por partes; la fuente se validó en simulación antes de montarla.",
+    "pasos": [
+      {
+        "titulo": "Requerimientos",
+        "texto": "Observación, entrevistas y revisión de fichas técnicas.",
+        "imagen": "cad-requerimientos"
+      },
+      {
+        "titulo": "Diseño CAD",
+        "texto": "Paredes con encastres, tapa con asas y ventilación para la soldadora.",
+        "imagen": "cad-tapa"
+      },
+      {
+        "titulo": "Impresión 3D",
+        "texto": "Cada pared se imprime por separado y se ensambla con encastres.",
+        "imagen": "cad-pared-ventilacion"
+      },
+      {
+        "titulo": "Integración",
+        "texto": "Los tres circuitos se montan cada uno en su módulo.",
+        "imagen": "cad-integracion"
+      },
+      {
+        "titulo": "Pruebas",
+        "texto": "Tensión, corriente y temperatura registradas en cada módulo.",
+        "imagen": "cad-pruebas"
+      }
+    ],
+    "simulacion": {
+      "titulo": "Fuente regulable en Proteus",
+      "columnas": [
+        "Parámetro",
+        "Objetivo",
+        "Simulado"
+      ],
+      "filas": [
+        [
+          "Tensión mínima",
+          "1,25 V",
+          "1,25 V"
+        ],
+        [
+          "Tensión máxima",
+          "≥ 20 V",
+          "23,85 V"
+        ],
+        [
+          "Rizado en salida a 1 A",
+          "≤ 50 mVpp",
+          "12,5 mVpp"
+        ],
+        [
+          "Corriente del LED indicador",
+          "≈ 10 mA",
+          "9,12 mA"
+        ]
+      ]
+    }
+  },
+  "version2": {
+    "h2": "Versión 2, en desarrollo",
+    "items": [
+      {
+        "texto": "Carcasa más compacta y ligera, con cableado ordenado y mejor aislamiento",
+        "estado": "En desarrollo"
+      },
+      {
+        "texto": "Montaje exterior para organizar el multímetro, las puntas y los cables",
+        "estado": "Planeado"
+      },
+      {
+        "texto": "Cautín integrado",
+        "estado": "Planeado"
+      },
+      {
+        "texto": "Medición integrada para la fuente y el probador",
+        "estado": "Planeado"
+      },
+      {
+        "texto": "Multímetro independiente incluido",
+        "estado": "Planeado"
+      },
+      {
+        "texto": "Asistente de diagnóstico guiado",
+        "estado": "Planeado"
+      }
+    ],
+    "piloto": "Si trabajas con electrónica, puedes probar la versión 2 antes que nadie."
+  },
+  "equipo": {
+    "h2": "Equipo de Ingeniería Mecatrónica",
+    "intro": "Cuatro estudiantes de Universidad Invenio, Generación 2025, en Guanacaste."
+  },
+  "cierre": {
+    "marca": "Todo tu banco de trabajo, en una sola caja.",
+    "texto": "Te mostramos MEBAKIT funcionando o te sumamos al piloto con estudiantes y técnicos.",
+    "imagen": "mebakit-en-mesa",
+    "alianzas": "Para alianzas y patrocinios, escribe a la coordinación de Ingeniería Mecatrónica de Universidad Invenio."
+  },
+  "formulario": {
+    "campos": {
+      "nombre": "Nombre",
+      "correo": "Correo",
+      "perfil": {
+        "etiqueta": "Perfil",
+        "opciones": [
+          "Estudiante",
+          "Técnico independiente",
+          "Taller",
+          "Institución educativa",
+          "Otro"
+        ]
+      },
+      "interes": {
+        "etiqueta": "Qué te interesa",
+        "opciones": [
+          "Ver una demostración",
+          "Participar en el piloto",
+          "Comprar cuando esté disponible",
+          "Apoyar el proyecto"
+        ]
+      },
+      "equipos": {
+        "etiqueta": "¿Cuántos equipos trasladas para un trabajo típico?",
+        "opciones": [
+          "1–2",
+          "3–4",
+          "5 o más"
+        ]
+      },
+      "mensaje": "Mensaje (opcional)",
+      "consentimiento": "Acepto que el equipo de MEBAKIT me contacte sobre esta solicitud."
+    },
+    "errores": {
+      "resumen": "Revisa estos campos antes de enviar:",
+      "nombre": "Escribe tu nombre.",
+      "correo": "Escribe un correo válido, como nombre@correo.com.",
+      "perfil": "Elige tu perfil.",
+      "interes": "Elige qué te interesa.",
+      "consentimiento": "Marca la casilla para que podamos contactarte.",
+      "envio": "No pudimos enviar el formulario. Revisa tu conexión e inténtalo de nuevo, o escríbenos por WhatsApp.",
+      "captcha": "Confirma que no eres un robot."
+    },
+    "enviando": "Enviando…",
+    "exito": "Recibimos tu solicitud. {tiempoRespuesta}."
+  },
+  "documentos": [
+    {
+      "titulo": "Informe de investigación",
+      "archivo": null,
+      "detalle": "47 páginas"
+    },
+    {
+      "titulo": "Póster",
+      "archivo": null,
+      "detalle": null
+    },
+    {
+      "titulo": "Ficha técnica",
+      "archivo": null,
+      "detalle": null
+    }
+  ],
+  "pie": {
+    "aviso": "Prototipo académico, sin certificación eléctrica.",
+    "privacidad": "Aviso de privacidad"
+  },
+  "gracias": {
+    "titulo": "Recibimos tu solicitud",
+    "texto": "Gracias por tu interés en MEBAKIT. {tiempoRespuesta}.",
+    "volver": "Volver a MEBAKIT"
+  }
+}

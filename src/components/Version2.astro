@@ -1,0 +1,28 @@
+---
+import c from '../data/contenido.json';
+const v = c.version2;
+---
+<section id="hoja-de-ruta" class="seccion" aria-labelledby="h-v2">
+  <div class="wrap grid">
+    <div class="cabeza">
+      <h2 id="h-v2">{v.h2}</h2>
+      <p>{v.piloto}</p>
+      <div><a class="boton secundario" href="#contacto" data-interes="Participar en el piloto">{c.acciones.piloto}</a></div>
+    </div>
+    <ul class="items">
+      {v.items.map((it) => (
+        <li><span>{it.texto}</span><span class={`estado ${it.estado === 'En desarrollo' ? 'activo' : ''}`}>{it.estado}</span></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; }
+  .cabeza { gap: var(--e-5); }
+  .items li { display: flex; justify-content: space-between; align-items: baseline; gap: var(--e-5); padding: var(--e-4) 0; border-top: 1px solid var(--linea-suave); }
+  .items li:last-child { border-bottom: 1px solid var(--linea-suave); }
+  .estado { flex: none; font: 500 0.8rem/1 var(--f-texto); padding: 6px 10px; border: 1px solid var(--gris-linea); border-radius: 999px; color: var(--gris-texto); }
+  .estado.activo { border-color: var(--azul); color: var(--azul); }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,16 @@
+{
+  "correo": "",
+  "whatsapp": "",
+  "mensajeWhatsapp": "Hola, quiero ver una demostración de MEBAKIT",
+  "tiempoRespuesta": "Respondemos en 2 días hábiles",
+  "formularioEndpoint": "netlify",
+  "alianzas": "Coordinación de Ingeniería Mecatrónica, Universidad Invenio",
+  "ubicacion": "Guanacaste, Costa Rica",
+  "redes": { "instagram": "", "linkedin": "" },
+  "equipo": [
+    { "nombre": "Carlos Andrés Centeno Fajardo", "rol": "", "linkedin": "" },
+    { "nombre": "Elshira Margieth Miranda Ramírez", "rol": "", "linkedin": "" },
+    { "nombre": "Mariana Vargas Gómez", "rol": "", "linkedin": "" },
+    { "nombre": "Brithany Cabezas Baltodano", "rol": "", "linkedin": "" }
+  ]
+}

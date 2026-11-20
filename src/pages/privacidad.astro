@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import k from '../data/contacto.json';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<Base titulo="Aviso de privacidad — MEBAKIT">
+  <main id="contenido" class="wrap texto">
+    <p><a class="enlace" href={base}>MEBAKIT</a></p>
+    <h1>Aviso de privacidad</h1>
+    <p>Los datos que envías en el formulario (nombre, correo, perfil, interés y mensaje) se usan solo para responder tu solicitud de demostración o de participación en el piloto de MEBAKIT.</p>
+    <p>No se venden ni se comparten con terceros. Los recibe el equipo del proyecto, de Ingeniería Mecatrónica de Universidad Invenio, {k.ubicacion}, conforme a la Ley 8968 de Protección de la Persona frente al Tratamiento de sus Datos Personales.</p>
+    <p>Para filtrar spam, el formulario usa reCAPTCHA de Google, que puede recopilar datos técnicos de tu navegador según su propia política de privacidad. El envío y el filtro de spam los gestiona Netlify.</p>
+    <p>Puedes pedir que se consulten, corrijan o eliminen tus datos escribiendo al equipo por los canales de contacto de la página principal.</p>
+  </main>
+</Base>
+<style>
+  .texto { display: grid; gap: var(--e-5); padding-block: var(--e-9); max-width: 760px; }
+  h1 { font-size: var(--t-h2); }
+</style>
